@@ -1,0 +1,34 @@
+
+
+
+
+CRIANDO UM MODEL from
+Herança de forms.ModelForm
+rescreve a class Meta e indica qual Model deseja criar o formulário e '__all__' traz todos os campos da tabela e mostra no formulário.
+
+
+#em forms.py
+class CarModelForm(forms.ModelForm):
+    class Meta:
+        model = Car
+        # Campos do formulário
+        fields = '__all__' # Indica que quero no formulário todos os campos da minha tabela
+
+
+
+#Em viwes
+def new_car_view(request):
+    if request.method == 'POST':
+        new_car_form = CarModelForm(request.POST, request.FILES)# REQUEST.FILES PARA CASO A REQUISIÇÃO TRAGA IMAGENS
+        
+        if new_car_form.is_valid(): # valida os dados
+            new_car_form.save() # metodo dentro do form
+            return redirect('cars_list')
+        else:
+            pass
+    else:
+        new_car_form = CarModelForm()
+    return render(request, 'new_car.html', {'new_car_form': new_car_form})
+
+
+OBS: Funções de validação do Django sempre devem começar com "def clean_nome do campo"

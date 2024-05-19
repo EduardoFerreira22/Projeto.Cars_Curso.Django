@@ -1,0 +1,39 @@
+1. py -m venv venv
+2. .\venv\Scripts\activate
+3. pip install Django
+4. django-admin startproject (proj. name) #cria o projeto
+5. py manage.py migrate
+6. py manage.py createsuperuser #criando o superusuario para acessar a área admin
+7. py manage.py startapp (app name) #criando o primeiro app
+
+ARQUIVOS DA ESTRUTURAS DO DJANGO
+
+1. MODELS: Arquivo onde será escrito os modelos(modelando tabelas) de tabelas do banco de dados.
+2. VIEWS: Arquivo que contém todas as lógicas de como trazer e renderizar as páginas solicitadas pelo usuário. As views usam os models para exibir dados para o usuário.
+3. ADMIN: Arquivo que contém configurações da área de administração do sistema Django, não é acessível ao usuário final. Essa área dá acesso ao dono do projeto
+a um CRUD onde é possível ter acesso a todos os dados do banco de dados daquele sistema onde é possível(inserir, alterar, deletar) dados.
+4. 
+
+
+
+CONFIGURAÇÕES PARA TRABALHAR COM UPLOADS DE IMAGENS:
+
+1. No Model que receberá o import de imagens ex:(photo = models.ImageField(upload_to='cars/', blank=True,null=True) #Campo de uploads de imagens)
+2. No arquivo "settings" adicionar as seguintes linhas(MEDIA_ROOT = os.path.join(BASE_DIR, 'media'), MEDIA_URL = '/media/')
+3. No arquivo "urls" do projeto(Não do app) adicionar a linha  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) e fazendo os seguintes 
+imports(from django.conf import settings, from django.conf.urls.static import static)
+
+VARIÁVEL CONTEXT:
+cria um contexto, onde a view solicita ao banco de dados os dados que serão retornados junto com o template html ...
+
+
+LINGUAGEM DE TEMPLATES DJANGO
+https://docs.djangoproject.com/pt-br/4.1/ref/templates/language/
+
+BUSCANDO DADOS NO BANCO DE DADOS--------------------------------------------------------------------------------------------------------------------------
+
+- objects.all() - traz todos os dados da tabelas
+- cars = Car.objects.filter(brand__name='Fiat') - usando filter para filtrar dados o uso de 2 __ siginifica uma conexão entre duas tabelas
+    cars = Car.objects.filter(model__contains='F') - o metodo __contains filtra tudo que contem a "letra" ou "palavra" que o usuário informar na pesquisa.
+    OBS: "usando __contains esse metódo irá buscar exatamente oque o usuário digitar
+    usando o __icontains esse metódo não irá fazer distinção se o usuário está digitando letras maiúsculas ou minúsculas."
