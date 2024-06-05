@@ -1,4 +1,5 @@
 {% extends "base.html" %}{% block content %}
+
   <style>
     .car-grid {
       display: grid;
@@ -106,7 +107,7 @@
         <div class="car-card">
           <img src="{{ car.photo.url }}" alt="{{ car.model }} - {{ car.brand }}">
           <h2>{{ car.brand }} {{ car.model }}</h2>
-          <p>{{ car.factory_year }} - R$ {{ car.value }}</p>
+          <p>{{ car.factory_year }} - {{ car.fomatted_value }}</p>
         </div>
       {% endfor %}
     {% else %}

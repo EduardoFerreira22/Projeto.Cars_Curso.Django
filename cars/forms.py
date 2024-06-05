@@ -30,18 +30,19 @@ class CarForm(forms.Form):
 class CarModelForm(forms.ModelForm):
     class Meta:
         model = Car
-        # Campos do formulário
-        fields = '__all__' # Indica que quero no formulário todos os campos da minha tabela
+        fields = '__all__'
 
     def clean_value(self):
-        value = self.cleaned_data.get('value')# captura do formulário os dados já limpos do campo value do form
-        if value < 20000:
+        value = self.cleaned_data.get('value')
+        if value < 10000:
             self.add_error('value', 'Valor mínimo do carro deve ser de R$20.000')
         return value
     
     def clean_factory_year(self):
         factory_year = self.cleaned_data.get('factory_year')
         model_year = self.cleaned_data.get('model_year')
-        if factory_year or model_year < 1979:
-            self.add_error('factory_year','Só é possível cadastrar carros de ano de fabricação e modelo anterior a 1980.')
-        return factory_year, model_year
+        if factory_year and factory_year < 1980:
+            self.add_error('factory_year', 'Só é possível cadastrar carros de ano de fabricação anterior a 1980.')
+        if model_year and model_year < 1980:
+            self.add_error('model_year', 'Só é possível cadastrar carros de ano de modelo anterior a 1980.')
+        return factory_year

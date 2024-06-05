@@ -32,3 +32,43 @@ def new_car_view(request):
 
 
 OBS: Funções de validação do Django sempre devem começar com "def clean_nome do campo"
+
+
+List View ----------------------------------------------------
+class CarsListView(ListView):
+
+    model = Car # model que esta-rá sendo usado
+    template_name = 'cars.html' # Faz a mesma função que o render, só precisa informar qual o template que será renderizado
+    context_object_name = 'cars'
+
+    def get_queryset(self):
+        cars = super().get_queryset().order_by('model')
+        search = self.request.GET.get('search')
+        
+        if search:
+            cars = cars.filter(model__icontains=search)
+
+        return cars
+
+
+Create view ------------------------------------------------
+
+class NewCarCreateView(CreateView):
+    model = Car # Informar qual o model
+    form_class = CarModelForm # De qual form virá os dados 
+    template_name = 'new_car.html' # em qual template está localizado esse formulário
+    success_url = '/cars_list/' # para qual URL será direcionado após o cadastro ter êxito
+
+muda-se no em new_car.html
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" >
+        {% csrf_token %} <!--csrf_token usar sempre que criar um formulário para segurança dos dados-->
+        <table>
+            {{ new_car_form.as_table }} -> para {{ form.as_table }} não precisa mais usar o:new_car_form.as_table
+        </table>
+
+        <input type="submit" value="Cadastrar" class="btn btn-primary" >
+    </form>    
+{% endblock %}

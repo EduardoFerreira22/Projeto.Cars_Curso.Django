@@ -1,0 +1,26 @@
+
+class CarsView(View):
+
+    def get(self, request):
+        cars = Car.objects.all().order_by('model')
+        search = request.GET.get('search') #pega os dados do usuário através do parâmetro 'search' e armazena na variável.
+        if search: # verifica se o usuário fez alguma busca
+            cars = cars.filter(model_icontains=search).order_by('model')#pucha os objetos do banco de dados através do metódo 'filter' e trazendo tudo que contain.
+
+        for car in cars:
+            car.fomatted_value = format_currency(car.value, 'BRL', locale='pt_BR')
+            
+        return render(
+            request,
+            'cars.html',
+            {'cars': cars}# caso o usuário não tenha feito nenhuma busca o programa vai trazer todos os carros.
+        )
+
+    
+
+class CarsListView(ListView):
+
+    def get(self, request):
+        model = Car # model que esta-rá sendo usado
+        template_name = 'cars.html' # Faz a mesma função que o render, só precisa informar qual o template que será renderizado
+        context_object_name = 'cars'
