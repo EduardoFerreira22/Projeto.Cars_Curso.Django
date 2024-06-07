@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from  cars.models import Car
 from cars.forms import CarModelForm
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 from babel.numbers import format_currency
 
 
@@ -35,3 +35,7 @@ class NewCarCreateView(CreateView):
     template_name = 'new_car.html' # em qual template está localizado esse formulário
     success_url = '/cars/' # para qual URL será direcionado após o cadastro ter êxito
     
+
+class CarDetailView(DetailView):
+    model = Car
+    template_name = 'car_detail.html'
