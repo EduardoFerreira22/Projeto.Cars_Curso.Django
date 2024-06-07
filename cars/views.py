@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from  cars.models import Car
 from cars.forms import CarModelForm
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from babel.numbers import format_currency
 
 
@@ -39,3 +39,18 @@ class NewCarCreateView(CreateView):
 class CarDetailView(DetailView):
     model = Car
     template_name = 'car_detail.html'
+
+
+class CarUpdateView(UpdateView):
+    model = Car  #usa o model form
+    form_class = CarModelForm # Pega o formulário de cadastros de produtos
+    template_name = 'car_update.html' # Insere modelForm no html
+    success_url = '/cars/' # se tiver sucesso redireciona para a página cars
+
+    def get_success_url(self): # Reescrevendo uma função do Django para conseguir redirecionar o usuário para uma url personalizada após fazer um Update
+        return ...
+
+class CarDeleteView(DeleteView):
+    model = Car
+    template_name = 'car_delete.html'
+    success_url = '/cars/'

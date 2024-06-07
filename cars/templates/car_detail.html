@@ -39,9 +39,11 @@
     .buttons-container {
       display: flex;
       justify-content: center;
+      margin-left: 200px;
       margin-top: 20px;
       margin-bottom: 20px;
     }
+
 
     .btn {
       display: inline-block;
@@ -58,6 +60,9 @@
 
     .btn:hover {
       background-color: #108eb8;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      transform: translateY(-2px);
     }
 
     .btn-danger {
@@ -78,8 +83,6 @@
     a {
       text-decoration: none !important;
     }
-
-
   </style>
   <div class="car-card">
       <img src="{{ object.photo.url }}" alt="{{ object.model }} - {{ object.brand }}">
@@ -87,6 +90,11 @@
       <p><strong>Ano de fabricação:</strong> {{ object.factory_year }}</p>
       <p><strong>Ano do modelo:</strong> {{ object.model_year }}</p>
       <p><strong>Placa:</strong> {{ object.plate }}</p>
-      <p><strong>Preço:</strong> R$ {{ object.value }}</p> 
-    </div>
+      <p><strong>Preço:</strong> R$ {{ object.value }}</p>
+  </div>
+  <div class="buttons-container">
+    <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
+    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
+    <a href="{% url 'cars_list' %}" class="btn btn-primary">Voltar</a>
+  </div>
 {% endblock %}
