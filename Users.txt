@@ -1,0 +1,33 @@
+from django.contrib.auth.decorators import login_required # Controle de autorização de usuários
+from django.utils.decorators import method_decorator
+
+
+"""
+com o method @method_decorator(login_required(login_url='login'), name='dispatch') estiver trabalhando, o usuário não conseguirá acessar essa view sem realizar o login primeiro
+caso tente será redirecionado para a view 'login'.
+"""
+@method_decorator(login_required(login_url='login'), name='dispatch') # Faz uma verificação  nas permissões de usuários para verificar se pode executar essa view
+class NewCarCreateView(CreateView):
+    model = Car # Informar qual o model
+    form_class = CarModelForm # De qual form virá os dados 
+    template_name = 'new_car.html' # em qual template está localizado esse formulário
+    success_url = '/cars/' # para qual URL será direcionado após o cadastro ter êxito
+    
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class CarUpdateView(UpdateView):
+    model = Car  #usa o model form
+    form_class = CarModelForm # Pega o formulário de cadastros de produtos
+    template_name = 'car_update.html' # Insere modelForm no html
+    success_url = '/cars/' # se tiver sucesso redireciona para a página cars
+
+    def get_success_url(self): # Reescrevendo uma função do Django para conseguir redirecionar o usuário para uma url personalizada após fazer um Update
+        return reverse_lazy('car_detail', kwargs={'pk': self.object.pk})
+        """
+        O metódo reverse_lazy server para redirecionar o usuário após um evento
+        nesse caso a função está redirecionando para a url=car_detail e pegando 
+        a primary key do item alterado evitando que após realizar a edição do item
+        o usuário não sejá redirecionado para a lista de carros da tela principal, 
+        más sim para o template do mesmo item que foi alterado.
+        Mais sobre reverse_lazy: https://docs.djangoproject.com/en/5.0/ref/urlresolvers/
+        """
