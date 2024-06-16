@@ -28,6 +28,7 @@ class Car(models.Model):
     plate = models.CharField(max_length=10,blank=True, null=True) #campo que recebe a placa do carro
     value = models.FloatField(blank=True, null=True)
     photo = models.ImageField(upload_to='cars/', blank=True,null=True) #Campo de uploads de imagens
+    bio = models.TextField(blank=True, null=True)
     """
         blank=true permite deixar um campo em branco sem necessidade de preenchimento.
     """
@@ -35,3 +36,13 @@ class Car(models.Model):
         return self.model 
     #muda o padrão de mostrar o título "Objects num" por modelo do e número do objeto na página de Adm
 
+class CarInventory(models.Model):
+    cars_count = models.IntegerField()
+    cars_value = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.cars_count} - {self.cars_value}'
